@@ -115,7 +115,7 @@ if (file)
     }
     
     file_text_close(file);
-    show_message_async("Number of Palettes found: " + string(num_palettes));
+    show_message_async("Left-click to cycle palettes#Right-click to toggle shader on/off##Number of Palettes found: " + string(num_palettes));
 }
 
 // default
@@ -138,7 +138,7 @@ else
     out_colour[num_palettes,channel.b_4] = 70;
     
     num_palettes = 1;
-    show_message_async("Error reading " + pal_filename);
+    show_message_async("Left-click to cycle palettes#Right-click to toggle shader on/off##Error reading " + pal_filename);
 }
 </string>
           </argument>
