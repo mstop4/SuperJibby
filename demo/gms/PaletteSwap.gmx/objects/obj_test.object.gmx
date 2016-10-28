@@ -28,11 +28,17 @@
             <string>// enum for convenience
 enum channel
 {
-    r, g, b, a
+    r_1, g_1, b_1, a_1,
+    r_2, g_2, b_2, a_2,
+    r_3, g_3, b_3, a_3,
+    r_4, g_4, b_4, a_4
 }
 
 maxChanValue = 255;
 shader_on = true;
+cur_palette = 0;
+num_palettes = 0;
+pal_filename = "palettes.dat";
 
 // set up application surface
 screen_width = 160;
@@ -41,38 +47,121 @@ surface_resize(application_surface,screen_width,screen_height);
 application_surface_draw_enable(false);
 
 // init in colours
-in_colour[0,channel.r] = 0;
-in_colour[0,channel.g] = 0;
-in_colour[0,channel.b] = 0;
+in_colour[channel.r_1] = 0;
+in_colour[channel.g_1] = 0;
+in_colour[channel.b_1] = 0;
 
-in_colour[1,channel.r] = 127;
-in_colour[1,channel.g] = 127;
-in_colour[1,channel.b] = 127;
+in_colour[channel.r_2] = 127;
+in_colour[channel.g_2] = 127;
+in_colour[channel.b_2] = 127;
 
-in_colour[2,channel.r] = 192;
-in_colour[2,channel.g] = 192;
-in_colour[2,channel.b] = 192;
+in_colour[channel.r_3] = 192;
+in_colour[channel.g_3] = 192;
+in_colour[channel.b_3] = 192;
 
-in_colour[3,channel.r] = 255;
-in_colour[3,channel.g] = 255;
-in_colour[3,channel.b] = 255;
+in_colour[channel.r_4] = 255;
+in_colour[channel.g_4] = 255;
+in_colour[channel.b_4] = 255;
 
 // init out colours
-out_colour[0,channel.r] = 8;
-out_colour[0,channel.g] = 41;
-out_colour[0,channel.b] = 85;
+out_colour[0,0] = 0;
+palette_name[0] = "";
 
-out_colour[1,channel.r] = 34;
-out_colour[1,channel.g] = 111;
-out_colour[1,channel.b] = 95;
+file = file_text_open_read(pal_filename);
 
-out_colour[2,channel.r] = 121;
-out_colour[2,channel.g] = 170;
-out_colour[2,channel.b] = 109;
+// read rgb valeus from file
+if (file)
+{
+    while (!file_text_eof(file))
+    {
+        // read name
+        palette_name[num_palettes] = file_text_readln(file);
+        
+        //read rgb values
+        out_colour[num_palettes, channel.r_1] = file_text_read_real(file); // red 1
+        file_text_readln(file);
+        out_colour[num_palettes, channel.g_1] = file_text_read_real(file); // green 1
+        file_text_readln(file);
+        out_colour[num_palettes, channel.b_1] = file_text_read_real(file); // blue 1
+        file_text_readln(file);
+        file_text_readln(file); // seperator
+        
+        out_colour[num_palettes, channel.r_2] = file_text_read_real(file); // red 2
+        file_text_readln(file);
+        out_colour[num_palettes, channel.g_2] = file_text_read_real(file); // green 2
+        file_text_readln(file);
+        out_colour[num_palettes, channel.b_2] = file_text_read_real(file); // blue 2
+        file_text_readln(file);
+        file_text_readln(file); // seperator
+        
+        out_colour[num_palettes, channel.r_3] = file_text_read_real(file); // red 3
+        file_text_readln(file);
+        out_colour[num_palettes, channel.g_3] = file_text_read_real(file); // green 3
+        file_text_readln(file);
+        out_colour[num_palettes, channel.b_3] = file_text_read_real(file); // blue 3
+        file_text_readln(file);
+        file_text_readln(file); // seperator
+        
+        out_colour[num_palettes, channel.r_4] = file_text_read_real(file); // red 4
+        file_text_readln(file);
+        out_colour[num_palettes, channel.g_4] = file_text_read_real(file); // green 4
+        file_text_readln(file);
+        out_colour[num_palettes, channel.b_4] = file_text_read_real(file); // blue 4
+        file_text_readln(file);
+        file_text_readln(file); // seperator
+        
+        num_palettes++;
+    }
+    
+    file_text_close(file);
+    show_message_async("Number of Palettes found: " + string(num_palettes));
+}
 
-out_colour[3,channel.r] = 175;
-out_colour[3,channel.g] = 203;
-out_colour[3,channel.b] = 70;
+// default
+else
+{
+    out_colour[num_palettes,channel.r_1] = 8;
+    out_colour[num_palettes,channel.g_1] = 41;
+    out_colour[num_palettes,channel.b_1] = 85;
+    
+    out_colour[num_palettes,channel.r_2] = 34;
+    out_colour[num_palettes,channel.g_2] = 111;
+    out_colour[num_palettes,channel.b_2] = 95;
+    
+    out_colour[num_palettes,channel.r_3] = 121;
+    out_colour[num_palettes,channel.g_3] = 170;
+    out_colour[num_palettes,channel.b_3] = 109;
+    
+    out_colour[num_palettes,channel.r_4] = 175;
+    out_colour[num_palettes,channel.g_4] = 203;
+    out_colour[num_palettes,channel.b_4] = 70;
+    
+    num_palettes = 1;
+    show_message_async("Error reading " + pal_filename);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="6" enumb="54">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>shader_on = !shader_on;
 </string>
           </argument>
         </arguments>
@@ -95,7 +184,7 @@ out_colour[3,channel.b] = 70;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>shader_on = !shader_on;
+            <string>cur_palette = (cur_palette + 1) mod num_palettes;
 </string>
           </argument>
         </arguments>
