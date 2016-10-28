@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{EC4FDF2E-CD2D-4036-8909-AED2F1A5442F}</ProjectGuid>
+    <ProjectGuid>{6B1B0FC4-04E0-4041-ABD5-6341BF317DDE}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>SimplePaletteSwapper</RootNamespace>
   </PropertyGroup>
